@@ -18,10 +18,10 @@ const validateToken = asyncHandler(async (req, res, next) => {
       req.user = decoded.user
       next()
     })
+  } else {
+    res.status(401)
+    throw new Error('Authorization Token Is Missing!')
   }
-
-  res.status(401)
-  throw new Error('Authentication Token Is Missing!')
 })
 
 module.exports = validateToken
