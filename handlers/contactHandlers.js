@@ -86,8 +86,8 @@ const deleteContact = asyncHandler(async (req, res) => {
       "The User doesn't have permission to delete another user's contact!"
     )
   }
-  const deletedContact = await Contact.findByIdAndDelete(id)
-  res.status(200).json(deletedContact)
+  await Contact.findByIdAndDelete(id)
+  res.status(204)
 })
 
 module.exports = {
