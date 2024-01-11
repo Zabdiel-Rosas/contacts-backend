@@ -7,7 +7,7 @@ const {
   getContact,
   updateContact,
   deleteContact,
-} = require('../controllers/contactControllers')
+} = require('../handlers/contactHandlers')
 
 router.use(validateToken)
 router.route('/').get(getAllContacts).post(createContact)
