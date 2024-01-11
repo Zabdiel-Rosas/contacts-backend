@@ -2,23 +2,13 @@ const asyncHandler = require('express-async-handler')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const User = require('../models/userModel')
+const config = require('../config/index')
 
 //@desc Register User
 //@route POST /api/users/register
 //@access public
-const registerUser = asyncHandler(async (req, res) => {
+const userRegisterHandler = asyncHandler(async (req, res) => {
   const { username, email, password } = req.body
-
-  if (!username || !email || !password) {
-    res.status(400)
-    throw new Error('All fields are mandatory!')
-  }
-  const emailExist = await User.findOne({ email })
-
-  if (emailExist) {
-    res.status(400)
-    throw new Error('Email already registered!')
-  }
 
   const hashedPassword = await bcrypt.hash(password, 10)
   const user = await User.create({
@@ -38,7 +28,7 @@ const registerUser = asyncHandler(async (req, res) => {
 //@desc Login User
 //@route POST /api/users/login
 //@access public
-const loginUser = asyncHandler(async (req, res) => {
+const userLoginHandler = asyncHandler(async (req, res) => {
   const { email, password } = req.body
 
   if (!email || !password) {
@@ -58,8 +48,8 @@ const loginUser = asyncHandler(async (req, res) => {
           id: user.id,
         },
       },
-      process.env.ACCESS_TOKEN_SECRET,
-      { expiresIn: '15min' }
+      config.get('auth').secret,
+      { expiresIn: config.get('auth').expiration }
     )
     res.status(200).json({ accessToken })
   } else {
@@ -71,12 +61,12 @@ const loginUser = asyncHandler(async (req, res) => {
 //@desc Current User Information
 //@route GET /api/users/current
 //@access private
-const currentUser = asyncHandler(async (req, res) => {
+const userCurrentHandler = asyncHandler(async (req, res) => {
   res.status(200).json(req.user)
 })
 
 module.exports = {
-  registerUser,
-  loginUser,
-  currentUser,
+  userRegisterHandler,
+  userLoginHandler,
+  userCurrentHandler,
 }
