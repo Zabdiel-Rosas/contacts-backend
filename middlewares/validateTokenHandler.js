@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken')
 const asyncHandler = require('express-async-handler')
+const config = require('../config/index')
 
 const validateToken = asyncHandler(async (req, res, next) => {
   let token
@@ -9,7 +10,7 @@ const validateToken = asyncHandler(async (req, res, next) => {
     token = authHeader.split(' ')[1]
 
     //verify token
-    jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, decoded) => {
+    jwt.verify(token, config.get('auth').secret, (err, decoded) => {
       if (err) {
         res.status(401)
         throw new Error('User Is Not Authorized!')
