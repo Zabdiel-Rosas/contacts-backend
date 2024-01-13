@@ -29,33 +29,19 @@ const userRegisterHandler = asyncHandler(async (req, res) => {
 //@route POST /api/users/login
 //@access public
 const userLoginHandler = asyncHandler(async (req, res) => {
-  const { email, password } = req.body
-
-  if (!email || !password) {
-    res.status(400)
-    throw new Error('All fields are mandatory!')
-  }
-
-  const user = await User.findOne({ email })
-  const passwordIsValid = await bcrypt.compare(password, user.password)
-
-  if (user && passwordIsValid) {
-    const accessToken = jwt.sign(
-      {
-        user: {
-          username: user.username,
-          email: user.email,
-          id: user.id,
-        },
+  const { user } = req
+  const accessToken = jwt.sign(
+    {
+      user: {
+        username: user.username,
+        email: user.email,
+        id: user.id,
       },
-      config.get('auth').secret,
-      { expiresIn: config.get('auth').expiration }
-    )
-    res.status(200).json({ accessToken })
-  } else {
-    res.status(400)
-    throw new Error('Email or Password is not valid!')
-  }
+    },
+    config.get('auth').secret,
+    { expiresIn: config.get('auth').expiration }
+  )
+  res.status(200).json({ accessToken })
 })
 
 //@desc Current User Information
