@@ -87,7 +87,7 @@ const deleteContact = asyncHandler(async (req, res) => {
     )
   }
   await Contact.findByIdAndDelete(id)
-  res.status(204)
+  res.status(204).json({})
 })
 
 module.exports = {
