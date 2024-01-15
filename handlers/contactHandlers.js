@@ -1,12 +1,24 @@
 const asyncHandler = require('express-async-handler')
 const Contact = require('../models/contactModel')
+const {
+  findContactById,
+  findContactsByUserId,
+  validateContactExistence,
+} = require('../services/validateContactRoutes')
+const errorHandler = require('../middlewares/errorHandler')
 
 //@desc Get All Contacts
 //@route GET /api/contacts
 //@access private
 const getAllContacts = asyncHandler(async (req, res) => {
-  const contacts = await Contact.find({ user_id: req.user.id })
-  res.status(200).json(contacts)
+  try {
+    const contacts = await findContactsByUserId(req.user.id)
+
+    res.status(200).json(contacts)
+  } catch (err) {
+    res.status(err.status)
+    errorHandler(err, req, res)
+  }
 })
 
 //@desc Create Contact
@@ -14,11 +26,6 @@ const getAllContacts = asyncHandler(async (req, res) => {
 //@access private
 const createContact = asyncHandler(async (req, res) => {
   const { name, email, phone } = req.body
-
-  if (!name || !email || !phone) {
-    res.status(400)
-    throw new Error('All fields are mandatory!')
-  }
 
   const contact = await Contact.create({
     name,
@@ -35,13 +42,15 @@ const createContact = asyncHandler(async (req, res) => {
 //@access private
 const getContact = asyncHandler(async (req, res) => {
   const { id } = req.params
-  const contact = await Contact.findById(id)
 
-  if (!contact) {
-    res.status(404)
-    throw new Error('Contact was not found!')
+  try {
+    const contact = await findContactById(id)
+    validateContactExistence(contact)
+
+    res.status(200).json(contact)
+  } catch (err) {
+    errorHandler(err, req, res)
   }
-  res.status(200).json(contact)
 })
 
 //@desc Update Contact
@@ -49,19 +58,7 @@ const getContact = asyncHandler(async (req, res) => {
 //@access private
 const updateContact = asyncHandler(async (req, res) => {
   const { id } = req.params
-  const contact = await Contact.findById(id)
 
-  if (!contact) {
-    res.status(404)
-    throw new Error('Contact was not found!')
-  }
-
-  if (contact.user_id.toString() !== req.user.id) {
-    res.status(403)
-    throw new Error(
-      "The User doesn't have permission to update another user's contact!"
-    )
-  }
   const updatedContact = await Contact.findByIdAndUpdate(id, req.body, {
     new: true,
   })
