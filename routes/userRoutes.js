@@ -6,8 +6,10 @@ const {
   userCurrentHandler,
 } = require('../handlers/userHandlers')
 //Inputs Validations
-const registerUserValidation = require('../validations/userRegister')
-const loginUserValidation = require('../validations/userLogin')
+const {
+  registerUserValidation,
+  loginUserValidation,
+} = require('../validations/index')
 //Logic Validations
 const {
   validateUserRegister,
