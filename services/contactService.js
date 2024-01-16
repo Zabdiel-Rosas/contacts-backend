@@ -1,4 +1,5 @@
 const Contact = require('../models/contactModel')
+const throwCustomError = require('./throwCustomError')
 
 const findContactById = async (id) => {
   const contact = await Contact.findById(id)
