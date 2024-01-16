@@ -14,7 +14,7 @@ const {
 const {
   validateUserRegister,
   validateUserLogin,
-} = require('../services/userService')
+} = require('../middlewares/userValidationHandlers')
 const validateToken = require('../middlewares/validateTokenHandler')
 
 router.post(

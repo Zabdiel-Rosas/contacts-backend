@@ -1,48 +1,37 @@
 const User = require('../models/userModel')
-const errorHandler = require('../middlewares/errorHandler')
 const bcrypt = require('bcrypt')
+const throwCustomError = require('./throwCustomError')
 
-const validateUserRegister = async (req, res, next) => {
-  try {
-    const { email } = req.body
-    const emailExists = await User.findOne({ email })
+const findByProperty = async (name, value) => {
+  const user = await User.findOne({ [name]: value })
+  return user
+}
 
-    if (emailExists) {
-      res.status(400)
-      throw new Error('Email Already Exists!')
-    }
-    next()
-  } catch (error) {
-    errorHandler(error, req, res)
+const validateUserExistance = (user) => {
+  if (!user) {
+    throwCustomError(404, "User wasn't found!")
   }
 }
 
-const validateUserLogin = async (req, res, next) => {
-  try {
-    const { email, password } = req.body
+const validateEmailUniqueness = async (email) => {
+  const emailExists = await User.findOne({ email })
 
-    const user = await User.findOne({ email })
+  if (emailExists) {
+    throwCustomError(400, 'The email you sent is already registered!')
+  }
+}
 
-    if (user) {
-      const passwordIsValid = await bcrypt.compare(password, user.password)
+const validateUserPassword = async (password, userPassword) => {
+  const passwordIsValid = await bcrypt.compare(password, userPassword)
 
-      if (!passwordIsValid) {
-        res.status(400)
-        throw new Error('Incorrect Password!')
-      }
-
-      req.user = user
-      next()
-    } else {
-      res.status(400)
-      throw new Error(`User with email ${email} doesn't exist!`)
-    }
-  } catch (error) {
-    errorHandler(error, req, res)
+  if (!passwordIsValid) {
+    throwCustomError(400, 'Incorrect Password!')
   }
 }
 
 module.exports = {
-  validateUserRegister,
-  validateUserLogin,
+  findByProperty,
+  validateUserExistance,
+  validateEmailUniqueness,
+  validateUserPassword,
 }
