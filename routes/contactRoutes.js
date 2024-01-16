@@ -1,16 +1,20 @@
 const express = require('express')
 const router = express.Router()
-//Inputs Validation
+
+// External middleware
+const validateToken = require('../middlewares/validateTokenHandler')
+//Internal validations and services
 const {
   contactCreateValidation,
   contactUpdateValidation,
 } = require('../validations/index')
-//Logic Validation
+
 const {
   validateContactCreate,
   validateContactUpdate,
+  validateContactDelete,
 } = require('../services/validateContactRoutes')
-const validateToken = require('../middlewares/validateTokenHandler')
+
 //Handlers
 const {
   getAllContacts,
@@ -20,7 +24,10 @@ const {
   deleteContact,
 } = require('../handlers/contactHandlers')
 
+// Middleware for all routes
 router.use(validateToken)
+
+// Routes
 router.get('/', getAllContacts)
 router.post('/', contactCreateValidation, validateContactCreate, createContact)
 router.put(
@@ -29,6 +36,7 @@ router.put(
   validateContactUpdate,
   updateContact
 )
-router.route('/:id').get(getContact).delete(deleteContact)
+router.get('/:id', getContact)
+router.delete('/:id', validateContactDelete, deleteContact)
 
 module.exports = router

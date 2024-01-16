@@ -30,7 +30,7 @@ const validateContactExistence = (contact) => {
 
 const validateUserOwnership = (contact, userId) => {
   if (contact.user_id.toString() !== userId) {
-    throwCustomError(403, "Can't update another user's contact!")
+    throwCustomError(403, "Can't update or delete another user's contact!")
   }
 }
 
@@ -75,10 +75,29 @@ const validateContactUpdate = async (req, res, next) => {
   }
 }
 
+const validateContactDelete = async (req, res, next) => {
+  try {
+    const contactId = req.params.id
+    const userId = req.user.id
+
+    const contact = await findContactById(contactId)
+
+    validateContactExistence(contact)
+
+    validateUserOwnership(contact, userId)
+
+    next()
+  } catch (err) {
+    res.status(err.status)
+    errorHandler(err, req, res)
+  }
+}
+
 module.exports = {
   findContactById,
   findContactsByUserId,
   validateContactExistence,
   validateContactCreate,
   validateContactUpdate,
+  validateContactDelete,
 }
