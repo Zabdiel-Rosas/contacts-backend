@@ -4,7 +4,8 @@ const {
   findContactById,
   findContactsByUserId,
   validateContactExistence,
-} = require('../services/validateContactRoutes')
+} = require('../services/contactService')
+
 const errorHandler = require('../middlewares/errorHandler')
 
 //@desc Get All Contacts

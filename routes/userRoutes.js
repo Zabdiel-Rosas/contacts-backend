@@ -14,7 +14,7 @@ const {
 const {
   validateUserRegister,
   validateUserLogin,
-} = require('../services/validateUserRoutes')
+} = require('../services/userService')
 const validateToken = require('../middlewares/validateTokenHandler')
 
 router.post(
