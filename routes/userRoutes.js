@@ -1,15 +1,29 @@
-const express = require('express')
-const router = express.Router()
+const { Router } = require('express')
+const router = Router()
 const {
   userRegisterHandler,
   userLoginHandler,
   userCurrentHandler,
 } = require('../handlers/userHandlers')
-const registerUserValidation = require('../validations/userRegister')
+//Inputs Validations
+const {
+  registerUserValidation,
+  loginUserValidation,
+} = require('../validations/index')
+//Logic Validations
+const {
+  validateUserRegister,
+  validateUserLogin,
+} = require('../services/validateUserRoutes')
 const validateToken = require('../middlewares/validateTokenHandler')
 
-router.post('/register', registerUserValidation, userRegisterHandler)
-router.post('/login', userLoginHandler)
+router.post(
+  '/register',
+  registerUserValidation,
+  validateUserRegister,
+  userRegisterHandler
+)
+router.post('/login', loginUserValidation, validateUserLogin, userLoginHandler)
 router.get('/current', validateToken, userCurrentHandler)
 
 module.exports = router
