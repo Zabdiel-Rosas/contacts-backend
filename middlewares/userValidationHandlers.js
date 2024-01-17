@@ -11,7 +11,6 @@ const validateUserRegister = async (req, res, next) => {
     await validateEmailUniqueness(req.body.email)
     next()
   } catch (err) {
-    res.status(err.status)
     errorHandler(err, req, res)
   }
 }
@@ -23,12 +22,11 @@ const validateUserLogin = async (req, res, next) => {
     const user = await findByProperty('email', email)
     validateUserExistance(user)
 
-    validateUserPassword(password, user.password)
+    await validateUserPassword(password, user.password)
 
     req.user = user
     next()
   } catch (err) {
-    res.status(err.status)
     errorHandler(err, req, res)
   }
 }
