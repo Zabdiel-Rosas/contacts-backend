@@ -4,7 +4,8 @@ const {
   findContactById,
   findContactsByUserId,
   validateContactExistence,
-} = require('../services/validateContactRoutes')
+} = require('../services/contactService')
+
 const errorHandler = require('../middlewares/errorHandler')
 
 //@desc Get All Contacts
@@ -16,7 +17,6 @@ const getAllContacts = asyncHandler(async (req, res) => {
 
     res.status(200).json(contacts)
   } catch (err) {
-    res.status(err.status)
     errorHandler(err, req, res)
   }
 })

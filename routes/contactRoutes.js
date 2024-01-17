@@ -13,7 +13,7 @@ const {
   validateContactCreate,
   validateContactUpdate,
   validateContactDelete,
-} = require('../services/validateContactRoutes')
+} = require('../middlewares/contactValidationHandlers')
 
 //Handlers
 const {
