@@ -15,7 +15,6 @@ const validateContactCreate = async (req, res, next) => {
 
     next()
   } catch (err) {
-    res.status(err.status)
     errorHandler(err, req, res)
   }
 }
@@ -31,13 +30,10 @@ const validateContactUpdate = async (req, res, next) => {
 
     validateUserOwnership(contact, userId)
 
-    findContactByProperty('email', emailToUpdate)
-
     await validateEmailUniqueness(emailToUpdate)
 
     next()
   } catch (err) {
-    res.status(err.status)
     errorHandler(err, req, res)
   }
 }
@@ -55,7 +51,6 @@ const validateContactDelete = async (req, res, next) => {
 
     next()
   } catch (err) {
-    res.status(err.status)
     errorHandler(err, req, res)
   }
 }

@@ -17,7 +17,6 @@ const getAllContacts = asyncHandler(async (req, res) => {
 
     res.status(200).json(contacts)
   } catch (err) {
-    res.status(err.status)
     errorHandler(err, req, res)
   }
 })
