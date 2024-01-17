@@ -1,5 +1,5 @@
 const joi = require('joi')
-const validationsHandler = require('../middlewares/validationsHandler')
+const inputValidationsHandler = require('../middlewares/inputValidationsHandler')
 
 const schema = joi.object({
   email: joi.string().email().required(),
@@ -7,7 +7,7 @@ const schema = joi.object({
 })
 
 const loginUserValidation = async (req, res, next) => {
-  return validationsHandler(req, res, next, schema)
+  return inputValidationsHandler(req, res, next, schema)
 }
 
 module.exports = loginUserValidation

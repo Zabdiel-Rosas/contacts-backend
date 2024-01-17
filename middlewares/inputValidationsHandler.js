@@ -1,4 +1,4 @@
-const validationsHandler = async (req, res, next, schema) => {
+const inputValidationsHandler = async (req, res, next, schema) => {
   try {
     const options = {
       abortEarly: false,
@@ -12,4 +12,4 @@ const validationsHandler = async (req, res, next, schema) => {
   }
 }
 
-module.exports = validationsHandler
+module.exports = inputValidationsHandler

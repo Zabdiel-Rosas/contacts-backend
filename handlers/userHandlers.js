@@ -17,12 +17,7 @@ const userRegisterHandler = asyncHandler(async (req, res) => {
     password: hashedPassword,
   })
 
-  if (user) {
-    res.status(201).json({ _id: user.id, email: user.email })
-  } else {
-    res.status(400)
-    throw new Error('User data is not valid!')
-  }
+  res.status(201).json({ _id: user.id, email: user.email })
 })
 
 //@desc Login User

@@ -4,7 +4,8 @@ const {
   findContactById,
   findContactsByUserId,
   validateContactExistence,
-} = require('../services/validateContactRoutes')
+} = require('../services/contactService')
+
 const errorHandler = require('../middlewares/errorHandler')
 
 //@desc Get All Contacts
@@ -16,7 +17,6 @@ const getAllContacts = asyncHandler(async (req, res) => {
 
     res.status(200).json(contacts)
   } catch (err) {
-    res.status(err.status)
     errorHandler(err, req, res)
   }
 })
@@ -69,21 +69,7 @@ const updateContact = asyncHandler(async (req, res) => {
 //@route DELETE /api/contacts/:id
 //@access private
 const deleteContact = asyncHandler(async (req, res) => {
-  const { id } = req.params
-  const contact = await Contact.findById(id)
-
-  if (!contact) {
-    res.status(404)
-    throw new Error('Contact was not found!')
-  }
-
-  if (contact.user_id.toString() !== req.user.id) {
-    res.status(403)
-    throw new Error(
-      "The User doesn't have permission to delete another user's contact!"
-    )
-  }
-  await Contact.findByIdAndDelete(id)
+  await Contact.findByIdAndDelete(req.params.id)
   res.status(204).json({})
 })
 

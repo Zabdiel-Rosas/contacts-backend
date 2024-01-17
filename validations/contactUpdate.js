@@ -1,5 +1,5 @@
 const Joi = require('joi')
-const validationsHandler = require('../middlewares/validationsHandler')
+const inputValidationsHandler = require('../middlewares/inputValidationsHandler')
 
 const phoneRegex = /^\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}$/
 
@@ -13,7 +13,7 @@ const schema = Joi.object({
 })
 
 const contactUpdateValidation = async (req, res, next) => {
-  return validationsHandler(req, res, next, schema)
+  return inputValidationsHandler(req, res, next, schema)
 }
 
 module.exports = contactUpdateValidation
