@@ -3,6 +3,11 @@ const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const User = require('../models/userModel')
 const config = require('../config/index')
+const {
+  findByProperty,
+  validateUserPassword,
+} = require('../services/userService')
+const throwCustomError = require('../services/throwCustomError')
 
 //@desc Register User
 //@route POST /api/users/register
@@ -24,7 +29,17 @@ const userRegisterHandler = asyncHandler(async (req, res) => {
 //@route POST /api/users/login
 //@access public
 const userLoginHandler = asyncHandler(async (req, res) => {
-  const { user } = req
+  const user = await findByProperty('email', req.body.email)
+
+  const validCredentials = await validateUserPassword(
+    req.body.password,
+    user.password
+  )
+
+  if (!user || !validCredentials) {
+    return throwCustomError(401, 'Incorrect Credentials!')
+  }
+
   const accessToken = jwt.sign(
     {
       user: {
