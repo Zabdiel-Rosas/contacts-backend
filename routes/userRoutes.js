@@ -11,19 +11,10 @@ const {
   loginUserValidation,
 } = require('../validations/index')
 //Logic Validations
-const {
-  validateUserRegister,
-  validateUserLogin,
-} = require('../middlewares/userValidationHandlers')
 const validateToken = require('../middlewares/validateTokenHandler')
 
-router.post(
-  '/register',
-  registerUserValidation,
-  validateUserRegister,
-  userRegisterHandler
-)
-router.post('/login', loginUserValidation, validateUserLogin, userLoginHandler)
+router.post('/register', registerUserValidation, userRegisterHandler)
+router.post('/login', loginUserValidation, userLoginHandler)
 router.get('/current', validateToken, userCurrentHandler)
 
 module.exports = router
