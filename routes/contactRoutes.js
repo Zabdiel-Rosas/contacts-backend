@@ -9,12 +9,6 @@ const {
   contactUpdateValidation,
 } = require('../validations/index')
 
-const {
-  validateContactCreate,
-  validateContactUpdate,
-  validateContactDelete,
-} = require('../middlewares/contactValidationHandlers')
-
 //Handlers
 const {
   getAllContacts,
@@ -29,14 +23,9 @@ router.use(validateToken)
 
 // Routes
 router.get('/', getAllContacts)
-router.post('/', contactCreateValidation, validateContactCreate, createContact)
-router.put(
-  '/:id',
-  contactUpdateValidation,
-  validateContactUpdate,
-  updateContact
-)
+router.post('/', contactCreateValidation, createContact)
+router.put('/:id', contactUpdateValidation, updateContact)
 router.get('/:id', getContact)
-router.delete('/:id', validateContactDelete, deleteContact)
+router.delete('/:id', deleteContact)
 
 module.exports = router
