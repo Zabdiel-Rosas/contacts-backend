@@ -1,13 +1,7 @@
 const Contact = require('../models/contactModel')
-const throwCustomError = require('./throwCustomError')
 
 const findContactById = async (id) => {
   const contact = await Contact.findById(id)
-  return contact
-}
-
-const findContactByProperty = async (propertyName, property) => {
-  const contact = await Contact.findOne({ [propertyName]: property })
   return contact
 }
 
@@ -16,30 +10,13 @@ const findContactsByUserId = async (userId) => {
   return contacts
 }
 
-const validateContactExistence = (contact) => {
-  if (!contact) {
-    throwCustomError(404, "The contact wasn't found!")
-  }
-}
-
-const validateUserOwnership = (contact, userId) => {
-  if (contact.user_id.toString() !== userId) {
-    throwCustomError(403, "Can't update or delete another user's contact!")
-  }
-}
-
 const validateEmailUniqueness = async (email) => {
   const emailExists = await Contact.findOne({ email })
-  if (emailExists) {
-    throwCustomError(400, 'The email you sent is already registered!')
-  }
+  return emailExists === null
 }
 
 module.exports = {
   findContactById,
-  findContactByProperty,
   findContactsByUserId,
-  validateContactExistence,
-  validateUserOwnership,
   validateEmailUniqueness,
 }
