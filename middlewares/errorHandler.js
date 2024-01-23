@@ -12,8 +12,9 @@ const errorHandler = (err, req, res, next) => {
   res.status(statusCode).json({
     title: errorTitle[statusCode],
     message: err.message,
-    stackTrace: err.stack,
   })
+
+  console.error('ERR STACKTRACE: ', err.stack)
 }
 
 module.exports = errorHandler

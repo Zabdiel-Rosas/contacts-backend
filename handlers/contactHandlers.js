@@ -3,22 +3,16 @@ const Contact = require('../models/contactModel')
 const {
   findContactById,
   findContactsByUserId,
-  validateContactExistence,
 } = require('../services/contactService')
-
-const errorHandler = require('../middlewares/errorHandler')
+const throwCustomError = require('../services/throwCustomError')
 
 //@desc Get All Contacts
 //@route GET /api/contacts
 //@access private
 const getAllContacts = asyncHandler(async (req, res) => {
-  try {
-    const contacts = await findContactsByUserId(req.user.id)
+  const contacts = await findContactsByUserId(req.user.id)
 
-    res.status(200).json(contacts)
-  } catch (err) {
-    errorHandler(err, req, res)
-  }
+  res.status(200).json(contacts)
 })
 
 //@desc Create Contact
@@ -41,25 +35,33 @@ const createContact = asyncHandler(async (req, res) => {
 //@route GET /api/contacts/:id
 //@access private
 const getContact = asyncHandler(async (req, res) => {
-  const { id } = req.params
+  const contact = await findContactById(req.params.id)
 
-  try {
-    const contact = await findContactById(id)
-    validateContactExistence(contact)
-
-    res.status(200).json(contact)
-  } catch (err) {
-    errorHandler(err, req, res)
+  if (!contact) {
+    throwCustomError(400, 'The Contact does not exists!')
   }
+
+  res.status(200).json(contact)
 })
 
 //@desc Update Contact
 //@route PUT /api/contacts/:id
 //@access private
 const updateContact = asyncHandler(async (req, res) => {
-  const { id } = req.params
+  const contactId = req.params.id
+  const userId = req.user.id
 
-  const updatedContact = await Contact.findByIdAndUpdate(id, req.body, {
+  const contact = await findContactById(contactId)
+
+  if (!contact) {
+    throwCustomError(400, 'Contact does not exists!')
+  }
+
+  if (contact.user_id.toString() !== userId) {
+    throwCustomError(403, "Can't update another user's contact!")
+  }
+
+  const updatedContact = await Contact.findByIdAndUpdate(contactId, req.body, {
     new: true,
   })
   res.status(200).json(updatedContact)
@@ -69,7 +71,20 @@ const updateContact = asyncHandler(async (req, res) => {
 //@route DELETE /api/contacts/:id
 //@access private
 const deleteContact = asyncHandler(async (req, res) => {
-  await Contact.findByIdAndDelete(req.params.id)
+  const contactId = req.params.id
+  const userId = req.user.id
+
+  const contact = await findContactById(contactId)
+
+  if (!contact) {
+    throwCustomError(400, "Contact wasn't found!")
+  }
+
+  if (contact.user_id.toString() !== userId) {
+    throwCustomError(403, "Can't delete another user's contact!")
+  }
+
+  await Contact.findByIdAndDelete(contactId)
   res.status(204).json({})
 })
 
