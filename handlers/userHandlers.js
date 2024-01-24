@@ -1,13 +1,12 @@
-const asyncHandler = require('express-async-handler')
-const bcrypt = require('bcrypt')
-const jwt = require('jsonwebtoken')
-const User = require('../models/userModel')
-const config = require('../config/index')
-const {
+import asyncHandler from 'express-async-handler'
+import bcrypt from 'bcrypt'
+import jwt from 'jsonwebtoken'
+import User from '../models/userModel.js'
+import config from '../config/index.js'
+import {
   findByProperty,
   validateUserPassword,
-} = require('../services/userService')
-const throwCustomError = require('../services/throwCustomError')
+} from '../services/userService.js'
 
 //@desc Register User
 //@route POST /api/users/register
@@ -37,7 +36,12 @@ const userLoginHandler = asyncHandler(async (req, res) => {
   )
 
   if (!user || !validCredentials) {
-    return throwCustomError(401, 'Incorrect Credentials!')
+    res.status(401).json({
+      parameter: 'Password',
+      message: 'Incorrect Password!',
+      type: 'Input',
+    })
+    return
   }
 
   const accessToken = jwt.sign(
@@ -61,8 +65,4 @@ const userCurrentHandler = asyncHandler(async (req, res) => {
   res.status(200).json(req.user)
 })
 
-module.exports = {
-  userRegisterHandler,
-  userLoginHandler,
-  userCurrentHandler,
-}
+export { userRegisterHandler, userLoginHandler, userCurrentHandler }

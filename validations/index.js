@@ -1,9 +1,9 @@
-const registerUserValidation = require('./userRegister')
-const loginUserValidation = require('./userLogin')
-const contactCreateValidation = require('./contactCreate')
-const contactUpdateValidation = require('./contactUpdate')
+import registerUserValidation from './userRegister.js'
+import loginUserValidation from './userLogin.js'
+import contactCreateValidation from './contactCreate.js'
+import contactUpdateValidation from './contactUpdate.js'
 
-module.exports = {
+export {
   registerUserValidation,
   loginUserValidation,
   contactCreateValidation,

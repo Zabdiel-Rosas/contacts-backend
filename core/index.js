@@ -1,7 +1,7 @@
-const express = require('express')
-const router = require('../routes/index')
-const errorHandler = require('../middlewares/errorHandler')
-const connectDb = require('../db/dbConnection')
+import express from 'express'
+import router from '../routes/index.js'
+import errorHandler from '../middlewares/errorHandler.js'
+import connectDb from '../db/dbConnection.js'
 
 const getApp = () => {
   connectDb()
@@ -15,4 +15,4 @@ const getApp = () => {
   return app
 }
 
-module.exports = getApp
+export default getApp

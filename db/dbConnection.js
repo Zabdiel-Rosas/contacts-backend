@@ -1,8 +1,8 @@
-const mongoose = require('mongoose')
-const config = require('../config/index')
+import mongoose from 'mongoose'
+import singletonConfig from '../config/index.js'
 
 const connectDb = async () => {
-  const { host, port, name, user, password } = config.get('db')
+  const { host, port, name, user, password } = singletonConfig.get('db')
   const connString = `mongodb+srv://${user}:${password}@${host}${
     port && `:${port}`
   }/${name}?retryWrites=true&w=majority`
@@ -20,4 +20,4 @@ const connectDb = async () => {
   }
 }
 
-module.exports = connectDb
+export default connectDb
