@@ -7,8 +7,16 @@ const inputValidationsHandler = async (req, res, next, schema) => {
     await schema.validateAsync(req.body, options)
     return next()
   } catch (err) {
+    const errors = err.details.map((item) => {
+      return {
+        property: item.context.label,
+        message: item.message,
+        type: 'Input',
+      }
+    })
+
     console.error(err)
-    return res.status(400).json(err)
+    return res.status(400).json(errors)
   }
 }
 

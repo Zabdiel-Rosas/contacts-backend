@@ -37,7 +37,12 @@ const userLoginHandler = asyncHandler(async (req, res) => {
   )
 
   if (!user || !validCredentials) {
-    return throwCustomError(401, 'Incorrect Credentials!')
+    res.status(401).json({
+      parameter: 'Password',
+      message: 'Incorrect Password!',
+      type: 'Input',
+    })
+    return
   }
 
   const accessToken = jwt.sign(

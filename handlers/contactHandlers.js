@@ -38,7 +38,12 @@ const getContact = asyncHandler(async (req, res) => {
   const contact = await findContactById(req.params.id)
 
   if (!contact) {
-    throwCustomError(400, 'The Contact does not exists!')
+    res.status(400).json({
+      property: 'id',
+      message: 'The Contact does not exists!',
+      type: 'Url Parameter',
+    })
+    return
   }
 
   res.status(200).json(contact)
@@ -54,11 +59,21 @@ const updateContact = asyncHandler(async (req, res) => {
   const contact = await findContactById(contactId)
 
   if (!contact) {
-    throwCustomError(400, 'Contact does not exists!')
+    res.status(400).json({
+      property: 'id',
+      message: 'The Contact does not exists!',
+      type: 'Url Parameter',
+    })
+    return
   }
 
   if (contact.user_id.toString() !== userId) {
-    throwCustomError(403, "Can't update another user's contact!")
+    res.status(403).json({
+      property: 'userId',
+      message: "Can't update another user's contact!",
+      type: 'User Permission',
+    })
+    return
   }
 
   const updatedContact = await Contact.findByIdAndUpdate(contactId, req.body, {
@@ -77,11 +92,21 @@ const deleteContact = asyncHandler(async (req, res) => {
   const contact = await findContactById(contactId)
 
   if (!contact) {
-    throwCustomError(400, "Contact wasn't found!")
+    res.status(400).json({
+      property: 'id',
+      message: 'The Contact does not exists!',
+      type: 'Url Parameter',
+    })
+    return
   }
 
   if (contact.user_id.toString() !== userId) {
-    throwCustomError(403, "Can't delete another user's contact!")
+    res.status(403).json({
+      property: 'userId',
+      message: "Can't delete another user's contact!",
+      type: 'User Permission',
+    })
+    return
   }
 
   await Contact.findByIdAndDelete(contactId)
