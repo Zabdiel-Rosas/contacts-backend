@@ -1,20 +1,21 @@
-const { Router } = require('express')
-const router = Router()
-const {
+import { Router } from 'express'
+import {
   userRegisterHandler,
   userLoginHandler,
   userCurrentHandler,
-} = require('../handlers/userHandlers')
+} from '../handlers/userHandlers.js'
 //Inputs Validations
-const {
+import {
   registerUserValidation,
   loginUserValidation,
-} = require('../validations/index')
+} from '../validations/index.js'
 //Logic Validations
-const validateToken = require('../middlewares/validateTokenHandler')
+import validateToken from '../middlewares/validateTokenHandler.js'
+
+const router = Router()
 
 router.post('/register', registerUserValidation, userRegisterHandler)
 router.post('/login', loginUserValidation, userLoginHandler)
 router.get('/current', validateToken, userCurrentHandler)
 
-module.exports = router
+export default router

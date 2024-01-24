@@ -1,4 +1,4 @@
-const dotenv = require('dotenv')
+import dotenv from 'dotenv'
 
 let instance
 let config = {}
@@ -44,4 +44,4 @@ class Configuration {
 const singletonConfig = Object.freeze(new Configuration())
 singletonConfig.initialize()
 
-module.exports = singletonConfig
+export default singletonConfig

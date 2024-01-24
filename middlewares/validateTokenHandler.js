@@ -1,6 +1,6 @@
-const jwt = require('jsonwebtoken')
-const asyncHandler = require('express-async-handler')
-const config = require('../config/index')
+import jwt from 'jsonwebtoken'
+import asyncHandler from 'express-async-handler'
+import config from '../config/index.js'
 
 const validateToken = asyncHandler(async (req, res, next) => {
   let token
@@ -25,4 +25,4 @@ const validateToken = asyncHandler(async (req, res, next) => {
   }
 })
 
-module.exports = validateToken
+export default validateToken
