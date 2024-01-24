@@ -7,7 +7,6 @@ const {
   findByProperty,
   validateUserPassword,
 } = require('../services/userService')
-const throwCustomError = require('../services/throwCustomError')
 
 //@desc Register User
 //@route POST /api/users/register

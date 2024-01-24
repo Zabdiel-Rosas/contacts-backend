@@ -4,7 +4,6 @@ const {
   findContactById,
   findContactsByUserId,
 } = require('../services/contactService')
-const throwCustomError = require('../services/throwCustomError')
 
 //@desc Get All Contacts
 //@route GET /api/contacts
