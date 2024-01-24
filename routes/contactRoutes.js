@@ -1,22 +1,22 @@
-const express = require('express')
-const router = express.Router()
-
+import express from 'express'
 // External middleware
-const validateToken = require('../middlewares/validateTokenHandler')
+import validateToken from '../middlewares/validateTokenHandler.js'
 //Internal validations and services
-const {
+import {
   contactCreateValidation,
   contactUpdateValidation,
-} = require('../validations/index')
+} from '../validations/index.js'
 
 //Handlers
-const {
+import {
   getAllContacts,
   createContact,
   getContact,
   updateContact,
   deleteContact,
-} = require('../handlers/contactHandlers')
+} from '../handlers/contactHandlers.js'
+
+const router = express.Router()
 
 // Middleware for all routes
 router.use(validateToken)
@@ -28,4 +28,4 @@ router.put('/:id', contactUpdateValidation, updateContact)
 router.get('/:id', getContact)
 router.delete('/:id', deleteContact)
 
-module.exports = router
+export default router

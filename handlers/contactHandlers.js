@@ -1,9 +1,9 @@
-const asyncHandler = require('express-async-handler')
-const Contact = require('../models/contactModel')
-const {
+import asyncHandler from 'express-async-handler'
+import Contact from '../models/contactModel.js'
+import {
   findContactById,
   findContactsByUserId,
-} = require('../services/contactService')
+} from '../services/contactService.js'
 
 //@desc Get All Contacts
 //@route GET /api/contacts
@@ -112,7 +112,7 @@ const deleteContact = asyncHandler(async (req, res) => {
   res.status(204).json({})
 })
 
-module.exports = {
+export {
   getAllContacts,
   createContact,
   getContact,

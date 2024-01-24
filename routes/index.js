@@ -1,7 +1,10 @@
-const { Router } = require('express')
+import { Router } from 'express'
+import contactRoutes from './contactRoutes.js'
+import userRoutes from './userRoutes.js'
+
 const router = Router()
 
-router.use('/api/contacts', require('./contactRoutes'))
-router.use('/api/users', require('./userRoutes'))
+router.use('/api/contacts', contactRoutes)
+router.use('/api/users', userRoutes)
 
-module.exports = router
+export default router

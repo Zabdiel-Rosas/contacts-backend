@@ -20,4 +20,4 @@ const inputValidationsHandler = async (req, res, next, schema) => {
   }
 }
 
-module.exports = inputValidationsHandler
+export default inputValidationsHandler

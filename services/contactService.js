@@ -1,22 +1,18 @@
-const Contact = require('../models/contactModel')
+import contactModel from '../models/contactModel.js'
 
 const findContactById = async (id) => {
-  const contact = await Contact.findById(id)
+  const contact = await contactModel.findById(id)
   return contact
 }
 
 const findContactsByUserId = async (userId) => {
-  const contacts = await Contact.find({ user_id: userId })
+  const contacts = await contactModel.find({ user_id: userId })
   return contacts
 }
 
 const validateEmailUniqueness = async (email) => {
-  const emailExists = await Contact.findOne({ email })
+  const emailExists = await contactModel.findOne({ email })
   return emailExists === null
 }
 
-module.exports = {
-  findContactById,
-  findContactsByUserId,
-  validateEmailUniqueness,
-}
+export { findContactById, findContactsByUserId, validateEmailUniqueness }

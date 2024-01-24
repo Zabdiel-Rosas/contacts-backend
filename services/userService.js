@@ -1,5 +1,5 @@
-const User = require('../models/userModel')
-const bcrypt = require('bcrypt')
+import User from '../models/userModel.js'
+import bcrypt from 'bcrypt'
 
 const findByProperty = async (name, value) => {
   return await User.findOne({ [name]: value })
@@ -14,8 +14,4 @@ const validateUserPassword = async (password, userPassword) => {
   return await bcrypt.compare(password, userPassword)
 }
 
-module.exports = {
-  findByProperty,
-  validateEmailUniqueness,
-  validateUserPassword,
-}
+export { findByProperty, validateEmailUniqueness, validateUserPassword }

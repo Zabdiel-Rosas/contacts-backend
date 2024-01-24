@@ -1,6 +1,6 @@
-const Joi = require('joi')
-const inputValidationsHandler = require('../middlewares/inputValidationsHandler')
-const { validateEmailUniqueness } = require('../services/contactService')
+import Joi from 'joi'
+import inputValidationsHandler from '../middlewares/inputValidationsHandler.js'
+import { validateEmailUniqueness } from '../services/contactService.js'
 
 const validateContactEmail = async (value, helpers) => {
   const emailIsUnique = await validateEmailUniqueness(value)
@@ -25,4 +25,4 @@ const contactCreateValidation = async (req, res, next) => {
   return inputValidationsHandler(req, res, next, schema)
 }
 
-module.exports = contactCreateValidation
+export default contactCreateValidation

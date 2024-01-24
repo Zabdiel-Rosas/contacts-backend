@@ -13,4 +13,4 @@ const errorHandler = (err, req, res, next) => {
   console.error('ERR STACKTRACE: ', err.stack)
 }
 
-module.exports = errorHandler
+export default errorHandler
